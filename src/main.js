@@ -89,7 +89,7 @@ function makeDoc({ preview = false } = {}) {
   el.className = 'editor';
   el.spellcheck = true;
   const ta = document.createElement('textarea');
-  ta.className = 'source';
+  ta.className = 'src-text';
   ta.spellcheck = false;
   ta.hidden = true;
   pane.append(el, ta);

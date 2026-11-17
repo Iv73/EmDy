@@ -200,12 +200,12 @@ button, select {
   inset: 0;
   overflow: auto;
 }
-.pane[hidden], .editor[hidden], .source[hidden] { display: none; }
+.pane[hidden], .editor[hidden], .src-text[hidden] { display: none; }
 .editor {
   padding: 24px 48px 120px;
   min-height: 100%;
 }
-.source {
+.src-text {
   display: block;
   width: 100%;
   height: 100%;
