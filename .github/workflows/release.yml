@@ -6,6 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
+  actions: read
   contents: write
 
 jobs:
@@ -39,10 +40,44 @@ jobs:
           Copy-Item src-tauri/target/release/bundle/nsis/*-setup.exe "out/EmDy-$v-setup.exe"
           Get-ChildItem out
 
-      - uses: actions/upload-artifact@v4
+      # Artefact non signé : requis par SignPath (le fichier doit provenir d'un build GitHub).
+      - name: Upload unsigned artifact
+        id: upload-unsigned
+        uses: actions/upload-artifact@v7
+        with:
+          name: EmDy-windows-unsigned
+          path: out/*
+
+      # Signature gratuite SignPath Foundation (projets open source).
+      # Active seulement si la variable de dépôt SIGNPATH_ORGANIZATION_ID est définie
+      # (voir CODE_SIGNING_POLICY.md). Sinon, la release est publiée sans signature.
+      - name: Sign with SignPath
+        if: vars.SIGNPATH_ORGANIZATION_ID != ''
+        uses: signpath/github-action-submit-signing-request@v3
+        with:
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: ${{ vars.SIGNPATH_ORGANIZATION_ID }}
+          project-slug: ${{ vars.SIGNPATH_PROJECT_SLUG || 'EmDy' }}
+          signing-policy-slug: ${{ vars.SIGNPATH_SIGNING_POLICY_SLUG || 'release-signing' }}
+          github-artifact-id: ${{ steps.upload-unsigned.outputs.artifact-id }}
+          wait-for-completion: true
+          output-artifact-directory: signed
+
+      - name: Choose files to publish
+        id: files
+        shell: pwsh
+        run: |
+          $dir = if (Test-Path signed) { "signed" } else { "out" }
+          "dir=$dir" >> $env:GITHUB_OUTPUT
+          Get-ChildItem $dir | ForEach-Object {
+            $sig = Get-AuthenticodeSignature $_.FullName
+            "$($_.Name): $($sig.Status) $($sig.SignerCertificate.Subject)"
+          }
+
+      - uses: actions/upload-artifact@v7
         with:
           name: EmDy-windows
-          path: out/*
+          path: ${{ steps.files.outputs.dir }}/*
 
       - name: Publish GitHub release
         if: startsWith(github.ref, 'refs/tags/')
@@ -53,4 +88,4 @@ jobs:
           $tag = "${{ github.ref_name }}"
           gh release view $tag 2>$null
           if ($LASTEXITCODE -ne 0) { gh release create $tag --title "EmDy $tag" --generate-notes }
-          gh release upload $tag (Get-ChildItem out/*).FullName --clobber
+          gh release upload $tag (Get-ChildItem "${{ steps.files.outputs.dir }}/*").FullName --clobber

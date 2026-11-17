@@ -94,3 +94,7 @@ Pushing a `v*` tag builds both files on GitHub Actions and attaches them to a re
 ## Licence / License
 
 [0BSD](LICENSE) (BSD Zero Clause): do anything you want with it, no attribution required.
+
+## Signature / Code signing
+
+Free code signing provided by [SignPath.io](https://about.signpath.io/), certificate by [SignPath Foundation](https://signpath.org/) — see the [code signing policy](CODE_SIGNING_POLICY.md).
