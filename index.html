@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EmDy</title>
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+  <header id="toolbar" role="toolbar">
+    <div class="group">
+      <button id="fileBtn" class="txt menu-btn" data-i18n="fileMenu" aria-haspopup="menu">Fichier</button>
+      <button data-act="sidebar" id="sidebarBtn" data-i18n-title="toggleSidebar"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/></svg></button>
+    </div>
+    <div class="group">
+      <button data-act="open" data-i18n-title="open"><svg viewBox="0 0 24 24"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M12 18v-6M9 15l3-3 3 3"/></svg></button>
+      <button data-act="openFolder" data-i18n-title="openFolder"><svg viewBox="0 0 24 24"><path d="M3 7a1 1 0 0 1 1-1h5l2 2h9a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/></svg></button>
+      <button data-act="save" data-i18n-title="save"><svg viewBox="0 0 24 24"><path d="M5 3h11l4 4v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M8 3v5h7V3M7 20v-6h10v6"/></svg></button>
+    </div>
+    <div class="group wys">
+      <button data-act="undo" data-i18n-title="undo"><svg viewBox="0 0 24 24"><path d="M9 14 4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-3"/></svg></button>
+      <button data-act="redo" data-i18n-title="redo"><svg viewBox="0 0 24 24"><path d="m15 14 5-5-5-5"/><path d="M20 9H9a5 5 0 0 0 0 10h3"/></svg></button>
+    </div>
+    <div class="group wys">
+      <button data-act="p" data-i18n-title="paragraph" class="txt">¶</button>
+      <button data-act="h1" data-i18n-title="h1" class="txt">H1</button>
+      <button data-act="h2" data-i18n-title="h2" class="txt">H2</button>
+      <button data-act="h3" data-i18n-title="h3" class="txt">H3</button>
+    </div>
+    <div class="group wys">
+      <button data-act="bold" data-i18n-title="bold" class="txt"><b>B</b></button>
+      <button data-act="italic" data-i18n-title="italic" class="txt"><i>I</i></button>
+      <button data-act="strike" data-i18n-title="strike" class="txt"><s>S</s></button>
+      <button data-act="code" data-i18n-title="code" class="txt mono">`c`</button>
+      <button data-act="link" data-i18n-title="link"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg></button>
+    </div>
+    <div class="group wys">
+      <button data-act="ul" data-i18n-title="bulletList"><svg viewBox="0 0 24 24"><path d="M9 6h12M9 12h12M9 18h12"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/></svg></button>
+      <button data-act="ol" data-i18n-title="orderedList"><svg viewBox="0 0 24 24"><path d="M10 6h11M10 12h11M10 18h11M4 4h1v5M3.5 9h3M3.5 15h3l-3 4h3"/></svg></button>
+      <button data-act="task" data-i18n-title="taskList"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="6" height="6" rx="1"/><path d="m4.5 7 1.2 1.2L8 5.8M12 7h9M12 17h9"/><rect x="3" y="14" width="6" height="6" rx="1"/></svg></button>
+      <button data-act="quote" data-i18n-title="quote"><svg viewBox="0 0 24 24"><path d="M4 5v14M9 8h11M9 12h11M9 16h7"/></svg></button>
+      <button data-act="codeblock" data-i18n-title="codeBlock"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="m10 10-2 2 2 2M14 10l2 2-2 2"/></svg></button>
+    </div>
+    <div class="group wys">
+      <button data-act="image" data-i18n-title="image"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg></button>
+      <button data-act="table" data-i18n-title="table"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg></button>
+      <button data-act="hr" data-i18n-title="hr"><svg viewBox="0 0 24 24"><path d="M3 12h18"/></svg></button>
+    </div>
+    <div class="group tbl" hidden>
+      <button data-act="rowAfter" data-i18n-title="addRow" class="txt small">+≡</button>
+      <button data-act="colAfter" data-i18n-title="addCol" class="txt small">+‖</button>
+      <button data-act="delCells" data-i18n-title="delCells" class="txt small">−</button>
+    </div>
+    <div class="spacer"></div>
+    <div class="group">
+      <button data-act="find" data-i18n-title="find"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></button>
+      <button data-act="source" id="sourceBtn" data-i18n-title="sourceMode" class="txt mono">M↓</button>
+    </div>
+  </header>
+
+  <div id="fileMenu" role="menu" hidden>
+    <button data-act="new" role="menuitem"><span data-i18n="mNew"></span><kbd>Ctrl+N</kbd></button>
+    <button data-act="open" role="menuitem"><span data-i18n="mOpen"></span><kbd>Ctrl+O</kbd></button>
+    <button data-act="openFolder" role="menuitem"><span data-i18n="mOpenFolder"></span><kbd>Ctrl+Maj+O</kbd></button>
+    <hr />
+    <button data-act="save" role="menuitem"><span data-i18n="mSave"></span><kbd>Ctrl+S</kbd></button>
+    <button data-act="saveAs" role="menuitem"><span data-i18n="mSaveAs"></span><kbd>Ctrl+Maj+S</kbd></button>
+    <button data-act="saveAll" role="menuitem"><span data-i18n="mSaveAll"></span><kbd>Ctrl+Alt+S</kbd></button>
+    <hr />
+    <button data-act="closeTab" role="menuitem"><span data-i18n="mCloseTab"></span><kbd>Ctrl+W</kbd></button>
+    <button data-act="closeFolder" role="menuitem"><span data-i18n="mCloseFolder"></span><kbd></kbd></button>
+    <hr />
+    <button data-act="settings" role="menuitem"><span data-i18n="mSettings"></span><kbd>Ctrl+,</kbd></button>
+    <hr />
+    <button data-act="quit" role="menuitem"><span data-i18n="mQuit"></span><kbd>Alt+F4</kbd></button>
+  </div>
+
+  <div id="work">
+    <aside id="sidebar" hidden>
+      <div class="side-head">
+        <span id="folderName"></span>
+        <button data-act="refresh" data-i18n-title="refresh"><svg viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg></button>
+        <button data-act="closeFolder" data-i18n-title="mCloseFolder"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      </div>
+      <div id="tree" role="tree"></div>
+    </aside>
+    <div id="resizer" hidden></div>
+    <section id="main">
+      <nav id="tabs">
+        <div id="tablist" role="tablist"></div>
+        <button id="newTab" data-act="new" data-i18n-title="newTab">+</button>
+      </nav>
+
+      <div id="findbar" hidden>
+        <input id="findInput" type="text" spellcheck="false" />
+        <span id="findMsg"></span>
+        <button data-find="prev" class="txt">↑</button>
+        <button data-find="next" class="txt">↓</button>
+        <button data-find="close" class="txt">✕</button>
+      </div>
+      <main id="panes"></main>
+
+    </section>
+  </div>
+
+  <footer id="status">
+    <span id="stMode"></span>
+    <span id="stWords"></span>
+  </footer>
+
+  <div id="modal" hidden>
+    <form id="modalBox">
+      <p id="modalMsg"></p>
+      <div id="modalRow"><input id="modalInput" type="text" spellcheck="false" /></div>
+      <div id="modalBtns"></div>
+    </form>
+  </div>
+
+  <div id="settings" class="overlay" hidden>
+    <form id="settingsBox">
+      <h2 data-i18n="setTitle"></h2>
+      <p id="setWelcome" data-i18n="setWelcome" hidden></p>
+      <label class="field">
+        <span data-i18n="setLang"></span>
+        <select id="setLang">
+          <option value="fr">Français</option>
+          <option value="en">English</option>
+        </select>
+      </label>
+      <fieldset>
+        <legend data-i18n="setWindows"></legend>
+        <label class="check"><input type="checkbox" id="setMd" /><span data-i18n="setMd"></span></label>
+        <label class="check"><input type="checkbox" id="setFolder" /><span data-i18n="setFolder"></span></label>
+        <p class="hint" data-i18n="setHint"></p>
+        <button type="button" id="setDefaultApps" data-i18n="setDefaultApps"></button>
+      </fieldset>
+      <p id="setError"></p>
+      <div class="btns">
+        <button type="button" id="setCancel" data-i18n="btnCancel"></button>
+        <button type="submit" class="primary" data-i18n="btnOk"></button>
+      </div>
+    </form>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

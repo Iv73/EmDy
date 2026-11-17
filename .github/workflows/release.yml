@@ -1,0 +1,56 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+
+      - run: npm ci
+
+      - name: Build (portable exe + NSIS installer)
+        run: npx tauri build
+
+      - name: Collect artifacts
+        shell: pwsh
+        run: |
+          $v = (Get-Content src-tauri/tauri.conf.json | ConvertFrom-Json).version
+          New-Item -ItemType Directory -Force out | Out-Null
+          Copy-Item src-tauri/target/release/emdy.exe "out/EmDy-$v-portable.exe"
+          Copy-Item src-tauri/target/release/bundle/nsis/*-setup.exe "out/EmDy-$v-setup.exe"
+          Get-ChildItem out
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: EmDy-windows
+          path: out/*
+
+      - name: Publish GitHub release
+        if: startsWith(github.ref, 'refs/tags/')
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $tag = "${{ github.ref_name }}"
+          gh release view $tag 2>$null
+          if ($LASTEXITCODE -ne 0) { gh release create $tag --title "EmDy $tag" --generate-notes }
+          gh release upload $tag (Get-ChildItem out/*).FullName --clobber
