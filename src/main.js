@@ -914,9 +914,19 @@ function openSettings(first = false) {
     $('#setLang').value = getLang();
     md.checked = first ? true : st.md;
     fd.checked = first ? true : st.folder;
-    $('#setWelcome').hidden = !first;
+    const paintTexts = () => {
+      $('#setTitle').textContent = first ? t('setWelcome') : t('setTitle');
+      $('#setSubtitle').textContent = first ? t('setWelcomeSub') : t('setSub');
+      $('#setLater').hidden = !first;
+      $('#setCancel').textContent = first ? t('btnLater') : t('btnCancel');
+      $('#setOk').textContent = first ? t('btnStart') : t('btnOk');
+    };
+    paintTexts();
+    // Aperçu immédiat de la langue choisie dans la fenêtre
+    const langBefore = getLang();
+    $('#setLang').onchange = () => { setLang($('#setLang').value); applyLang(); paintTexts(); };
     err.textContent = '';
-    const syncBtn = () => { $('#setDefaultApps').disabled = !md.checked; };
+    const syncBtn = () => { $('#setDefaultApps').parentElement.hidden = !md.checked; };
     syncBtn();
     md.onchange = syncBtn;
     $('#setDefaultApps').onclick = async () => {
@@ -934,6 +944,7 @@ function openSettings(first = false) {
       resolve();
     };
     $('#setCancel').onclick = async () => {
+      if (getLang() !== langBefore) { setLang(langBefore); applyLang(); }
       if (first) { settings.setupDone = true; await saveSettings(); }
       finish();
     };

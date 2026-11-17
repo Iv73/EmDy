@@ -118,27 +118,54 @@
 
   <div id="settings" class="overlay" hidden>
     <form id="settingsBox">
-      <h2 data-i18n="setTitle"></h2>
-      <p id="setWelcome" data-i18n="setWelcome" hidden></p>
-      <label class="field">
-        <span data-i18n="setLang"></span>
-        <select id="setLang">
-          <option value="fr">Français</option>
-          <option value="en">English</option>
-        </select>
-      </label>
-      <fieldset>
-        <legend data-i18n="setWindows"></legend>
-        <label class="check"><input type="checkbox" id="setMd" /><span data-i18n="setMd"></span></label>
-        <label class="check"><input type="checkbox" id="setFolder" /><span data-i18n="setFolder"></span></label>
-        <p class="hint" data-i18n="setHint"></p>
-        <button type="button" id="setDefaultApps" data-i18n="setDefaultApps"></button>
-      </fieldset>
+      <header class="set-head">
+        <img src="/app-icon.svg" alt="" width="40" height="40" />
+        <div>
+          <h2 id="setTitle"></h2>
+          <p id="setSubtitle"></p>
+        </div>
+      </header>
+
+      <section class="set-section">
+        <h3 data-i18n="setGeneral"></h3>
+        <div class="set-row">
+          <div class="set-text">
+            <label for="setLang" class="set-label" data-i18n="setLang"></label>
+          </div>
+          <select id="setLang">
+            <option value="fr">Français</option>
+            <option value="en">English</option>
+          </select>
+        </div>
+      </section>
+
+      <section class="set-section">
+        <h3 data-i18n="setWindows"></h3>
+        <label class="set-row" for="setMd">
+          <div class="set-text">
+            <span class="set-label" data-i18n="setMd"></span>
+            <span class="set-desc" data-i18n="setMdDesc"></span>
+          </div>
+          <input type="checkbox" id="setMd" class="switch" />
+        </label>
+        <div class="set-sub">
+          <button type="button" id="setDefaultApps" class="link" data-i18n="setDefaultApps"></button>
+        </div>
+        <label class="set-row" for="setFolder">
+          <div class="set-text">
+            <span class="set-label" data-i18n="setFolder"></span>
+            <span class="set-desc" data-i18n="setFolderDesc"></span>
+          </div>
+          <input type="checkbox" id="setFolder" class="switch" />
+        </label>
+      </section>
+
       <p id="setError"></p>
-      <div class="btns">
-        <button type="button" id="setCancel" data-i18n="btnCancel"></button>
-        <button type="submit" class="primary" data-i18n="btnOk"></button>
-      </div>
+      <footer class="set-foot">
+        <span id="setLater" data-i18n="setLater"></span>
+        <button type="button" id="setCancel"></button>
+        <button type="submit" id="setOk" class="primary"></button>
+      </footer>
     </form>
   </div>
 
