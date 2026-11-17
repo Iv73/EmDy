@@ -8,13 +8,13 @@ import {
 } from '@milkdown/kit/preset/commonmark';
 import {
   gfm, toggleStrikethroughCommand, insertTableCommand, addRowAfterCommand, addColAfterCommand,
-  deleteSelectedCellsCommand,
 } from '@milkdown/kit/preset/gfm';
 import { history, undoCommand, redoCommand } from '@milkdown/kit/plugin/history';
 import { listener, listenerCtx } from '@milkdown/kit/plugin/listener';
 import { clipboard } from '@milkdown/kit/plugin/clipboard';
 import { trailing } from '@milkdown/kit/plugin/trailing';
 import { TextSelection } from '@milkdown/kit/prose/state';
+import { deleteRow, deleteColumn, deleteTable, selectedRect } from '@milkdown/kit/prose/tables';
 import { callCommand, getMarkdown, replaceAll } from '@milkdown/kit/utils';
 import { invoke, convertFileSrc } from '@tauri-apps/api/core';
 import { listen } from '@tauri-apps/api/event';
@@ -461,12 +461,60 @@ async function insertImage() {
   run(insertImageCommand, { src, alt });
 }
 
+// Effacer la mise en forme : retire gras, italique, barré, code, liens,
+// et remet les titres et blocs de code en paragraphe normal.
+function clearFormat() {
+  if (active.sourceMode) return;
+  const v = view();
+  const { state } = v;
+  const { from, to, empty } = state.selection;
+  const para = state.schema.nodes.paragraph;
+  let tr = state.tr;
+  if (empty) {
+    tr = tr.setStoredMarks([]);
+  } else {
+    tr = tr.removeMark(from, to);
+  }
+  state.doc.nodesBetween(from, to, (node, pos) => {
+    if (node.isTextblock && node.type !== para) {
+      tr = tr.setBlockType(pos, pos + node.nodeSize, para);
+      return false;
+    }
+  });
+  v.dispatch(tr.scrollIntoView());
+  v.focus();
+}
+
 function inTable() {
   if (!active?.editor || active.sourceMode) return false;
   let $f;
   try { $f = view().state.selection.$from; } catch { return false; }
   for (let dp = $f.depth; dp > 0; dp--) if ($f.node(dp).type.name === 'table') return true;
   return false;
+}
+// Supprimer rangée / colonne / tableau. Supprimer la dernière rangée de données
+// ou la dernière colonne supprime le tableau entier (un tableau Markdown a
+// toujours une ligne d'en-tête).
+function tableCmd(what) {
+  if (!inTable()) return;
+  const v = view();
+  let cmd = what === 'row' ? deleteRow : what === 'col' ? deleteColumn : deleteTable;
+  try {
+    const rect = selectedRect(v.state);
+    if (what === 'col' && rect.map.width <= 1) cmd = deleteTable;
+    if (what === 'row') {
+      const headerSel = rect.top === 0;
+      const dataRows = rect.map.height - 1;
+      if (headerSel || dataRows <= rect.bottom - rect.top) {
+        // en-tête sélectionné : on ne le supprime pas, sauf s'il ne reste rien d'autre
+        if (dataRows > 0 && headerSel) return;
+        cmd = deleteTable;
+      }
+    }
+  } catch {}
+  cmd(v.state, v.dispatch);
+  v.focus();
+  updateTableTools();
 }
 function updateTableTools() { $('.group.tbl').hidden = !inTable(); }
 
@@ -479,12 +527,12 @@ const actions = {
   h1: () => run(wrapInHeadingCommand, 1), h2: () => run(wrapInHeadingCommand, 2), h3: () => run(wrapInHeadingCommand, 3),
   bold: () => run(toggleStrongCommand), italic: () => run(toggleEmphasisCommand),
   strike: () => run(toggleStrikethroughCommand), code: () => run(toggleInlineCodeCommand),
-  link: insertLink,
+  link: insertLink, clear: clearFormat,
   ul: () => run(wrapInBulletListCommand), ol: () => run(wrapInOrderedListCommand), task: toggleTask,
   quote: () => run(wrapInBlockquoteCommand), codeblock: () => run(createCodeBlockCommand),
   image: insertImage, table: () => { run(insertTableCommand); updateTableTools(); }, hr: () => run(insertHrCommand),
   rowAfter: () => run(addRowAfterCommand), colAfter: () => run(addColAfterCommand),
-  delCells: () => { run(deleteSelectedCellsCommand); updateTableTools(); },
+  delRow: () => tableCmd('row'), delCol: () => tableCmd('col'), delTable: () => tableCmd('table'),
 };
 
 async function saveAll() {
@@ -653,6 +701,7 @@ window.addEventListener('keydown', (e) => {
   else if (k === 'f') fn = openFind;
   else if (k === ',') fn = () => openSettings();
   else if (k === 'k') fn = insertLink;
+  else if (k === ' ' || k === '\\') fn = clearFormat;
   else if (k === '/' || e.code === 'Slash' || (k === 'm' && e.shiftKey)) fn = toggleSource;
   else if (k === 'p' || k === 'r' || k === 'g' || k === 'j') fn = () => {}; // bloque impression/rechargement
   if (fn) { e.preventDefault(); e.stopPropagation(); fn(); }
@@ -660,7 +709,7 @@ window.addEventListener('keydown', (e) => {
 
 // Pas de menu contextuel du navigateur hors des zones de texte
 document.addEventListener('contextmenu', (e) => {
-  if (!e.target.closest('.editor, .source, input')) e.preventDefault();
+  if (!e.target.closest('.editor, .src-text, input')) e.preventDefault();
 });
 
 // =====================================================================

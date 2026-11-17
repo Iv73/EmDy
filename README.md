@@ -43,6 +43,7 @@ Les réglages sont modifiables à tout moment dans **Fichier → Paramètres** (
 | `Ctrl+W` | Fermer l'onglet |
 | `Ctrl+Tab` / `Ctrl+Maj+Tab` | Onglet suivant / précédent |
 | `Ctrl+B` / `Ctrl+I` / `Ctrl+K` | Gras / Italique / Lien |
+| `Ctrl+Espace` | Effacer la mise en forme |
 | `Ctrl+Z` / `Ctrl+Y` | Annuler / Rétablir |
 | `Ctrl+F`, `F3` | Rechercher, suivant |
 | `Ctrl+/` | Basculer en mode Markdown |
