@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://aka.ms/winget-manifest.defaultLocale.1.9.0.schema.json
+# yaml-language-server: $schema=https://aka.ms/winget-manifest.defaultLocale.1.28.0.schema.json
 PackageIdentifier: Iv73.EmDy
 PackageVersion: __VERSION__
 PackageLocale: en-US
@@ -23,4 +23,4 @@ Tags:
 - text-editor
 ReleaseNotesUrl: https://github.com/Iv73/EmDy/releases/tag/v__VERSION__
 ManifestType: defaultLocale
-ManifestVersion: 1.9.0
+ManifestVersion: 1.28.0
