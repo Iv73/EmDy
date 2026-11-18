@@ -11,6 +11,14 @@ Var EmdyMdBox
 Var EmdyFolderBox
 
 !macro NSIS_HOOK_POSTINSTALL
+  ; Installation silencieuse (winget, /S) : on ne touche pas à Windows sans demander.
+  ; La fenêtre de configuration s'ouvrira au premier démarrage d'EmDy.
+  ${IfNot} ${Silent}
+    !insertmacro EmdyConfigure
+  ${EndIf}
+!macroend
+
+!macro EmdyConfigure
   ${If} $EmdyMd == ""
     StrCpy $EmdyMd 1
   ${EndIf}

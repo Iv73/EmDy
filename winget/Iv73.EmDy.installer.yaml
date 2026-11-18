@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=https://aka.ms/winget-manifest.installer.1.9.0.schema.json
+PackageIdentifier: Iv73.EmDy
+PackageVersion: __VERSION__
+InstallerLocale: en-US
+MinimumOSVersion: 10.0.17763.0
+InstallerType: nullsoft
+Scope: user
+InstallModes:
+- interactive
+- silent
+UpgradeBehavior: install
+FileExtensions:
+- md
+- markdown
+- mdown
+- mkd
+ReleaseDate: __DATE__
+Installers:
+- Architecture: x64
+  InstallerUrl: https://github.com/Iv73/EmDy/releases/download/v__VERSION__/EmDy-__VERSION__-setup.exe
+  InstallerSha256: __SHA256__
+ManifestType: installer
+ManifestVersion: 1.9.0

@@ -1,8 +1,56 @@
 # EmDy
 
-**Un éditeur Markdown simple, à la WordPad.** / **A simple, WordPad-like Markdown editor.**
+**A simple, WordPad-like Markdown editor.** / **Un éditeur Markdown simple, à la WordPad.**
 
-[Français](#français) · [English](#english)
+[English](#english) · [Français](#français)
+
+---
+
+## English
+
+EmDy opens and saves `.md` files, but you write as in a word processor: bold looks bold, headings look like headings, lists look like lists. The Markdown code only shows up when you ask for it.
+
+### Features
+
+- **Visual (WYSIWYG)**: bold, italic, strikethrough, code, headings, bulleted and numbered lists, clickable task lists, quotes, code blocks, links, images, tables, horizontal rules.
+- **Optional Markdown mode**: the **M↓** button or `Ctrl+/` shows the raw text so you can edit it, then switch back to the visual view.
+- **Tabs**: several files open at once, each with its own undo history.
+- **Folder explorer**, VS Code style: a single click opens the file in a preview tab (italic) that the next file replaces; a double-click or an edit keeps it open.
+- **Windows integration** (optional): "Open .md files with EmDy" and "Open with EmDy" in the folder right-click menu.
+- **Portable or installed**: a single `EmDy-portable.exe` (a few MB), or an installer that asks for the language and integration options.
+- **Bilingual**: English and French.
+- Light or dark theme following Windows; keeps line endings (CRLF or LF); saves as UTF-8.
+
+### Install
+
+From the [Releases](../../releases) page:
+
+- **`EmDy-x.y.z-setup.exe`**: installer (no admin rights needed). It asks for the language, then the Windows integration options.
+- **`EmDy-x.y.z-portable.exe`**: nothing to install. On first launch, a window offers the same settings.
+
+Settings can be changed anytime in **File → Settings** (`Ctrl+,`).
+
+> Windows does not let a program make itself the default app if you already picked another one for `.md` files. In that case, the **Choose EmDy in Windows settings…** button opens the right Windows settings page. On Windows 11, the right-click entries are under "Show more options".
+
+### Shortcuts
+
+| Shortcut | Action |
+|---|---|
+| `Ctrl+N` / `Ctrl+O` | New tab / Open a file |
+| `Ctrl+Shift+O` | Open a folder |
+| `Ctrl+Shift+E` | Show / hide the explorer |
+| `Ctrl+S` / `Ctrl+Shift+S` / `Ctrl+Alt+S` | Save / Save as / Save all |
+| `Ctrl+W` | Close the tab |
+| `Ctrl+Tab` / `Ctrl+Shift+Tab` | Next / previous tab |
+| `Ctrl+B` / `Ctrl+I` / `Ctrl+K` | Bold / Italic / Link |
+| `Ctrl+Space` | Clear formatting |
+| `Ctrl+Z` / `Ctrl+Y` | Undo / Redo |
+| `Ctrl+F`, `F3` | Find, find next |
+| `Ctrl+/` | Toggle Markdown mode |
+| `Ctrl+,` | Settings |
+| `Ctrl+click` on a link | Open in the browser |
+
+**Requirements**: Windows 10 or 11 with WebView2 (included in Windows 11 and up-to-date Windows 10; the installer adds it if needed).
 
 ---
 
@@ -30,7 +78,7 @@ Dans les [Releases](../../releases) :
 
 Les réglages sont modifiables à tout moment dans **Fichier → Paramètres** (`Ctrl+,`).
 
-> Windows ne permet pas à un programme de se déclarer lui-même « programme par défaut » si vous en avez déjà choisi un autre pour les `.md`. Dans ce cas, le bouton **Choisir EmDy par défaut dans Windows…** ouvre la bonne page des paramètres Windows. Sous Windows 11, les entrées du menu contextuel se trouvent sous « Afficher plus d'options ».
+> Windows ne permet pas à un programme de se déclarer lui-même « programme par défaut » si vous en avez déjà choisi un autre pour les `.md`. Dans ce cas, le bouton **Choisir EmDy dans les paramètres Windows…** ouvre la bonne page des paramètres Windows. Sous Windows 11, les entrées du menu contextuel se trouvent sous « Afficher plus d'options ».
 
 ### Raccourcis
 
@@ -54,27 +102,7 @@ Les réglages sont modifiables à tout moment dans **Fichier → Paramètres** (
 
 ---
 
-## English
-
-EmDy opens and saves `.md` files, but you write as in a word processor: bold looks bold, headings look like headings. The Markdown code only shows up when you ask for it.
-
-### Features
-
-- **Visual (WYSIWYG)**: bold, italic, strikethrough, code, headings, lists, clickable task lists, quotes, code blocks, links, images, tables, horizontal rules.
-- **Optional Markdown mode**: the **M↓** button or `Ctrl+/`.
-- **Tabs**, each with its own undo history.
-- **Folder explorer**, VS Code style: single-click opens a preview tab (italic) that the next file replaces; double-click or editing keeps it open.
-- **Windows integration** (optional): "Open .md files with EmDy" and "Open with EmDy" in the folder context menu.
-- **Portable or installed**: a single `EmDy-portable.exe`, or an installer that asks for language and integration options.
-- **Bilingual**: English and French.
-
-### Install
-
-From [Releases](../../releases): `EmDy-x.y.z-setup.exe` (installer, no admin rights needed) or `EmDy-x.y.z-portable.exe` (no install; a first-run window offers the same settings). Settings can be changed anytime in **File → Settings** (`Ctrl+,`). Shortcuts are listed in the French table above (`Maj` = `Shift`).
-
----
-
-## Développement / Development
+## Development / Développement
 
 Built with [Tauri 2](https://tauri.app) (Rust) and [Milkdown](https://milkdown.dev) (ProseMirror).
 
@@ -92,10 +120,16 @@ npm run tauri build                  # portable exe + NSIS installer
 
 Pushing a `v*` tag builds both files on GitHub Actions and attaches them to a release.
 
-## Licence / License
+## License / Licence
 
 [0BSD](LICENSE) (BSD Zero Clause): do anything you want with it, no attribution required.
 
-## Signature / Code signing
+## Code signing policy
 
-Free code signing provided by [SignPath.io](https://about.signpath.io/), certificate by [SignPath Foundation](https://signpath.org/) — see the [code signing policy](CODE_SIGNING_POLICY.md).
+Free code signing provided by [SignPath.io](https://about.signpath.io/), certificate by [SignPath Foundation](https://signpath.org/).
+
+- **Committers and reviewers**: [Iv73](https://github.com/Iv73)
+- **Approvers**: [Iv73](https://github.com/Iv73)
+- **Privacy**: this program will not transfer any information to other networked systems unless specifically requested by the user or the person installing or operating it.
+
+Details: [CODE_SIGNING_POLICY.md](CODE_SIGNING_POLICY.md).
